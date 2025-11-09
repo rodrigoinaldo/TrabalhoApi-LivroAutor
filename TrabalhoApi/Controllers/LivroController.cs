@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TrabalhoApi.Dto.Autor;
+using TrabalhoApi.Dto.Livro;
 using TrabalhoApi.Dto.Noticias;
 using TrabalhoApi.Model;
 using TrabalhoApi.Models;
@@ -32,6 +33,20 @@ namespace TrabalhoApi.Controllers
         {
             var autores = await _livroInterfacee.CriarLivro(noticiasCriacaoDto);
             return Ok(autores);
+        }
+
+        [HttpPut]
+        public async Task<ResponseModel<Livro>> AtualizarLivro(int idLivro, LivroEdicaoDto livroEdicaoDto)
+        {
+            var livros = await _livroInterfacee.AtualizarLivro(idLivro, livroEdicaoDto);
+            return livros;
+        }
+
+        [HttpDelete]
+        public async Task<ResponseModel<Livro>> DeletarLivro(int idLivro)
+        {
+            var livros = await _livroInterfacee.DeletarLivro(idLivro);
+            return livros;
         }
     }
 }

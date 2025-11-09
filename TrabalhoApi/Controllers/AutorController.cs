@@ -31,5 +31,20 @@ namespace TrabalhoApi.Controllers
             var autores = await _autorInterface.CriarAutor(autorCriacaoDto);
             return Ok(autores);
         }
-    }
+
+        [HttpPut("alterar autor")]
+        public async Task<ActionResult<ResponseModel<AutorModel>>> AtualizarAutor(int idAutor, AutorCriacaoDto autorCriacaoDto)
+        {
+            var autores = await _autorInterface.AtualizarAutor(idAutor, autorCriacaoDto);
+            return Ok(autores);
+        }
+
+        [HttpDelete("{idAutor}")]
+        public async Task<ActionResult<ResponseModel<AutorModel>>> DeletarAutor(int idAutor)
+        {
+            var autores = await _autorInterface.DeletarAutor(idAutor);
+            return Ok(autores);
+        }
 }
+}
+    

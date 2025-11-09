@@ -1,5 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using TrabalhoApi.Data;
+using TrabalhoApi.Dto.Autor;
+using TrabalhoApi.Dto.Livro;
 using TrabalhoApi.Dto.Noticias;
 using TrabalhoApi.Model;
 using TrabalhoApi.Models;
@@ -12,6 +15,57 @@ public class LivroService : ILivroInterface
     public LivroService(AppDbContext context)
     {
         _context = context;
+    }
+
+    public async Task<ResponseModel<Livro>> AtualizarLivro(int idLivro, LivroEdicaoDto livroEdicaoDto)
+    {
+        ResponseModel<Livro> resposta = new ResponseModel<Livro>();
+        try
+        {
+            var livro = await _context.Livros.FirstOrDefaultAsync(livroBanco => livroBanco.Id == idLivro);
+            var autor = await _context.Autores.FirstOrDefaultAsync(autorBanco => autorBanco.Id == livroEdicaoDto.AutorId);
+
+            //Debug.WriteLine(autor);
+
+            // validando se o autor existe
+            if (livro == null)
+            {
+                resposta.Mensagem = "livro não encontrado";
+                resposta.Status = false;
+                return resposta;
+            }
+
+            if(autor == null)
+            {
+                resposta.Mensagem = "autor não encontrado";
+                resposta.Status = false;
+                return resposta;
+            }
+                
+            //Debug.WriteLine(livroEdicaoDto.AutorId);
+
+            // atualizando os dados do autor
+            livro.Titulo = livroEdicaoDto.Titulo ?? livro.Titulo;
+            livro.Texto = livroEdicaoDto.Texto ?? livro.Texto;
+            livro.Data = livroEdicaoDto.Data ?? livro.Data ;
+            livro.AutorId = livroEdicaoDto.AutorId ?? livro.AutorId ;
+
+            // salvando as alterações no banco de dados
+            _context.Livros.Update(livro);
+            await _context.SaveChangesAsync();
+
+            // criando a resposta de sucesso
+            resposta.Dados = livro;
+            resposta.Mensagem = "livro atualizado com sucesso";
+            return resposta;
+
+        }
+        catch (Exception ex)
+        {
+            resposta.Mensagem = ex.Message;
+            resposta.Status = false;
+            return resposta;
+        }
     }
 
     public async Task<ResponseModel<Livro>> CriarLivro(LivroCriacaoDto livroCriacaoDto)
@@ -37,6 +91,36 @@ public class LivroService : ILivroInterface
 
 
             return resposta;
+        }
+        catch (Exception ex)
+        {
+            resposta.Mensagem = ex.Message;
+            resposta.Status = false;
+            return resposta;
+        }
+    }
+
+    public async Task<ResponseModel<Livro>> DeletarLivro(int idLivro)
+    {
+        ResponseModel<Livro> resposta = new ResponseModel<Livro>();
+
+        try
+        {
+            var livro = _context.Livros.FirstOrDefault(a => a.Id == idLivro);
+
+            if (livro == null)
+            {
+                resposta.Mensagem = "livro não encontrado";
+                return resposta;
+            }
+
+            _context.Livros.Remove(livro);
+            await _context.SaveChangesAsync();
+
+            resposta.Dados = livro;
+            resposta.Mensagem = "livro deletado com sucesso";
+            return resposta;
+
         }
         catch (Exception ex)
         {

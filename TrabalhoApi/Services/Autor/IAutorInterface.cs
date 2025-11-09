@@ -9,5 +9,8 @@ namespace TrabalhoApi.Services.Autor
         // buscar todos
         Task<ResponseModel<List<AutorModel>>> ListarAutores();
         Task<ResponseModel<AutorModel>> CriarAutor(AutorCriacaoDto autorCriacaoDto);
+        Task<ResponseModel<AutorModel>> AtualizarAutor(int idAutor, AutorCriacaoDto autorCriacaoDto);
+        Task<ResponseModel<AutorModel>> DeletarAutor(int idAutor);
+
     }
 }

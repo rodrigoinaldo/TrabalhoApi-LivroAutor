@@ -17,6 +17,53 @@ namespace TrabalhoApi.Services.Autor
             _context = context;
         }
 
+        public async Task<ResponseModel<AutorModel>> AtualizarAutor(int idAutor, AutorCriacaoDto autorCriacaoDto)
+        {
+            ResponseModel<AutorModel> resposta = new ResponseModel<AutorModel>();
+            try
+            {
+                // verificando se esta sendo passodo um id valido
+                //if (idAutor <= 0)
+                //{
+                //    resposta.Mensagem = "ID do autor inválido";
+                //    resposta.Status = false;
+                //    return resposta;
+                //}
+
+                // buscando o autor no banco de dados
+                //var autor = _context.Autores.FirstOrDefault(a => a.Id == idAutor);
+
+                var autor = await _context.Autores.FirstOrDefaultAsync(autorBanco => autorBanco.Id == idAutor);
+
+                // validando se o autor existe
+                if (autor == null)
+                {
+                    resposta.Mensagem = "Autor não encontrado";
+                    resposta.Status = false;
+                    return resposta;
+                }
+
+                // atualizando os dados do autor
+                autor.Name = autorCriacaoDto.Name ?? autor.Name;
+                autor.Email = autorCriacaoDto.Email ?? autor.Email;
+                // salvando as alterações no banco de dados
+                _context.Autores.Update(autor);
+                await _context.SaveChangesAsync();
+
+                // criando a resposta de sucesso
+                resposta.Dados = autor;
+                resposta.Mensagem = "Autor atualizado com sucesso";
+                return resposta;
+
+            }
+            catch (Exception ex)
+            {
+                resposta.Mensagem = ex.Message;
+                resposta.Status = false;
+                return resposta;
+            }
+        }
+
         public async Task<ResponseModel<AutorModel>> CriarAutor(AutorCriacaoDto autorCriacaoDto)
         {
             ResponseModel<AutorModel> resposta = new ResponseModel<AutorModel>();
@@ -44,6 +91,38 @@ namespace TrabalhoApi.Services.Autor
                 resposta.Status = false;
                 return resposta;
             }
+        }
+
+        public async Task<ResponseModel<AutorModel>> DeletarAutor(int idAutor)
+        {
+            ResponseModel<AutorModel> resposta = new ResponseModel<AutorModel>();
+
+            try
+            {
+
+                var autor = _context.Autores.FirstOrDefault(a => a.Id == idAutor);
+
+                if (autor == null)
+                {
+                    resposta.Mensagem = "Autor não encontrado";
+                    return resposta;
+                }
+
+                _context.Autores.Remove(autor);
+                await _context.SaveChangesAsync();
+
+                resposta.Dados = autor;
+                resposta.Mensagem = "Autor deletado com sucesso";
+                return resposta;
+
+            }
+            catch (Exception ex)
+            {
+                resposta.Mensagem = ex.Message;
+                resposta.Status = false;
+                return resposta;
+            }
+
         }
 
         public async Task<ResponseModel<List<AutorModel>>> ListarAutores()
