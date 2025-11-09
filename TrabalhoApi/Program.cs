@@ -1,40 +1,41 @@
-using Microsoft.EntityFrameworkCore;
-using TrabalhoApi.Data;
-using TrabalhoApi.Model;
-using TrabalhoApi.Services.Autor;
-using TrabalhoApi.Services.Noticias;
+//using Microsoft.AspNetCore.WebSockets;
+//using Microsoft.EntityFrameworkCore;
+//using TrabalhoApi.Data;
+//using TrabalhoApi.Model;
+//using TrabalhoApi.Services.Autor;
+//using TrabalhoApi.Services.Noticias;
 
-var builder = WebApplication.CreateBuilder(args);
+//var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+//// Add services to the container.
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+//builder.Services.AddControllers();
+//// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+//builder.Services.AddEndpointsApiExplorer();
+//builder.Services.AddSwaggerGen();
 
-// fazer a comunicação entre a intefaace e o service
-builder.Services.AddScoped<IAutorInterface, AutorService>();
-builder.Services.AddScoped<ILivroInterface, LivroService>();
+//// fazer a comunicação entre a intefaace e o service
+//builder.Services.AddScoped<IAutorInterface, AutorService>();
+//builder.Services.AddScoped<ILivroInterface, LivroService>();
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
+//builder.Services.AddDbContext<AppDbContext>(options =>
+//{
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+//});
 
-var app = builder.Build();
+//var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+//// Configure the HTTP request pipeline.
+//if (app.Environment.IsDevelopment())
+//{
+//    app.UseSwagger();
+//    app.UseSwaggerUI();
+//}
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
-app.UseAuthorization();
+//app.UseAuthorization();
 
-app.MapControllers();
+//app.MapControllers();
 
-app.Run();
+//app.Run();
