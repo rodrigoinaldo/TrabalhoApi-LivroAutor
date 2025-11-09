@@ -33,9 +33,9 @@ namespace TrabalhoApi.Controllers
         }
 
         [HttpPut("alterar autor")]
-        public async Task<ActionResult<ResponseModel<AutorModel>>> AtualizarAutor(int idAutor, AutorCriacaoDto autorCriacaoDto)
+        public async Task<ActionResult<ResponseModel<AutorModel>>> AtualizarAutor(int idAutor, AutorEdicaoDto autorEdicaoDto)
         {
-            var autores = await _autorInterface.AtualizarAutor(idAutor, autorCriacaoDto);
+            var autores = await _autorInterface.AtualizarAutor(idAutor, autorEdicaoDto);
             return Ok(autores);
         }
 
